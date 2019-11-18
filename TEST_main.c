@@ -40,11 +40,14 @@ int	main(int ac, char **av)
 
 	line = NULL;
 	fd = open(av[1], O_RDONLY, 45);
-	while ((ret = get_next_line(fd, &line) > 0))
+	if (fd == -1)
+		return (-1);
+	while ((ret = get_next_line(fd, &line)) > 0)
 	{
 		ft_putendl_fd(line, 1);
 		free(line);
 		line = NULL;
 	}
+	close(fd);
 	return (EXIT_SUCCESS);
 }
