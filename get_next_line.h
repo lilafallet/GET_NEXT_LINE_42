@@ -6,7 +6,7 @@
 /*   By: lfallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 16:28:57 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/18 18:13:21 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/18 20:12:53 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,17 @@
 
 # include <stdlib.h>
 
-# define BUFF_SIZE 5
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10
+# endif
 # define TRUE 1
 # define FALSE 0
 
+int		get_next_line(int fd, char **line);
 size_t	ft_strlen(const char *s);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strdup(const char *s);
+char	*ft_strndup(const char *s, size_t size);
 
 # endif

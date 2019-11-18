@@ -6,62 +6,89 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 16:30:10 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/18 18:28:45 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/18 21:07:50 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <unistd.h>
+#include <stdio.h> //DEBUG
 
-char	*get_rest(char *rest)
+int		get_rest(char **rest, char **line)
 {
-	char	*str;
 	char	*tmp;
+	char	*tmp2;
 	size_t	i;
-	size_t	tmp_i;
+	int		ret;
+
+	i = 0;
+	ret = 0;
+	tmp = NULL;
+	while ((*rest)[i] != '\0')
+	{
+		if ((*rest)[i] == '\n')
+		{
+			tmp = *line;
+			*line = ft_strndup(*rest, i); //MEMCPY
+			tmp2 = *line;
+			*line = ft_strjoin(tmp, tmp2);
+			free(tmp);
+			free(tmp2);
+			tmp = ft_strdup(*rest + i + 1); //MEMCPY
+			ret = 1;
+			break ;
+		}
+		i++;
+	}
+	if (i != 0 && ret == 0)
+	{
+		tmp2 = *line;
+		*line = ft_strjoin(tmp2, *rest); //MEMCPY
+		free(tmp2);
+		ret = 1;
+	}
+	free(*rest); //FREE
+	*rest = tmp;
+	return (ret);
+}
+
+int		contained_newline(char *rest)
+{
+	size_t	i;
 
 	i = 0;
 	while (rest[i] != '\0')
 	{
 		if (rest[i] == '\n')
-		{
-			tmp_i = i;
-			while (rest[i] == '\n')
-				i++;
-			break ;
-		}
-		i++;
-	}
-	str = ft_memcpy(str, rest, tmp + 1) //MEMCPY
-	str[tmp + 1] = '\0';
-	tmp = ft_memcpy(tmp, rest + i, (ft_strlen(rest) - i) + 1); //MEMCPY
-	free(rest); //FREE
-	tmp[(ft_strlen(rest) - i) + 1] = '\0';
-	rest = tmp;
-	return (str); 
-}
-
-char	*read_line(int fd, char *rest)
-{
-	char	buff[BUFFER_SIZE + 1];
-	int		ret;
-
-	while ((ret = read(fd, buff, BUFFER_SIZE)) > 0)
-	{
-		buff[BUFFER_SIZE] = '\0';
-		rest = ft_strjoin(rest, buff); //utilisation STRJOIN
-	}
-	return (rest);
-}
-
-int		is_backslach_n(char	*rest)
-{
-	while (rest[i] != '\0')
-	{
-		if (rest[i] =='\n')
 			return (TRUE);
 		i++;
 	}
 	return (FALSE);
+}
+
+int		read_line(int fd, char **rest, char **line)
+{
+	char	buff[BUFFER_SIZE + 1];
+	int		ret;
+	char	*tmp;
+
+	for (int i = 0; i < BUFFER_SIZE; i++) // ft_bzero
+		buff[i] = 0;
+	while ((ret = read(fd, buff, BUFFER_SIZE)) > 0)
+	{
+		buff[BUFFER_SIZE] = '\0';
+		tmp = *rest;
+		*rest = ft_strjoin(tmp, buff); //utilisation STRJOIN
+		free(tmp);
+		if (contained_newline(*rest) == TRUE)
+			break ;
+	}
+	if (ret != -1 && *rest != NULL)
+	{
+		get_rest(rest, line);
+		return (*line != NULL);
+	}
+	return (ret);
 }
 
 int		get_next_line(int fd, char **line)
@@ -69,27 +96,15 @@ int		get_next_line(int fd, char **line)
 	static char	*rest = NULL;
 	int			ret;
 
-	if (*line == NULL || fd < 0)
-		ret = -1;
-	else
+	ret = -1;
+	if (fd >= 0)
 	{
-		if (rest != NULL)
-		{
-			if (is_backslach_n(rest) == TRUE)
-			{
-				line = get_rest(&rest);
-				ret = 1;
-			}
-			if (ret == 1)
-				return (1);	
-		}		
-		rest = read_line(fd, &rest);
-		if (is_backslach_n(rest) == TRUE)
-		{
-			line = get_rest(&rest);
-			ret = 1;
-		}
-		rest = rea_line(fd, &rest);
+		if (rest == NULL)
+			ret = 0;
+		else
+			ret = get_rest(&rest, line);
+		if (ret == 0)
+			ret = read_line(fd, &rest, line);
 	}
-	return (ret == 1 ? 1 : 0);	
+	return (ret);	
 }
