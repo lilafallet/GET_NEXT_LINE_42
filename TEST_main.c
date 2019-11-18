@@ -38,10 +38,10 @@ int	main(int ac, char **av)
 	char	*line;
 	int		ret;
 
+	if (ac == 1)
+		return (EXIT_FAILURE);
 	line = NULL;
-	fd = open(av[1], O_RDONLY, 45);
-	if (fd == -1)
-		return (-1);
+	fd = open(av[1], O_RDONLY);
 	while ((ret = get_next_line(fd, &line)) > 0)
 	{
 		ft_putendl_fd(line, 1);

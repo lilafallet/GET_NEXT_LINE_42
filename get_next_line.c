@@ -6,7 +6,7 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 16:30:10 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/18 18:22:33 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/18 18:28:45 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int		get_next_line(int fd, char **line)
 			line = get_rest(&rest);
 			ret = 1;
 		}
+		rest = rea_line(fd, &rest);
 	}
-	return (ret == 1 ? 1 : -1);	
+	return (ret == 1 ? 1 : 0);	
 }
