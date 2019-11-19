@@ -6,7 +6,7 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 16:30:10 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/18 21:07:50 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/19 18:59:37 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,17 @@ int		get_rest(char **rest, char **line)
 	i = 0;
 	ret = 0;
 	tmp = NULL;
+	tmp2 = NULL;
 	while ((*rest)[i] != '\0')
 	{
 		if ((*rest)[i] == '\n')
 		{
 			tmp = *line;
-			*line = ft_strndup(*rest, i); //MEMCPY
-			tmp2 = *line;
+			tmp2 = ft_strndup(*rest, i); //STRNDUP
 			*line = ft_strjoin(tmp, tmp2);
-			free(tmp);
-			free(tmp2);
-			tmp = ft_strdup(*rest + i + 1); //MEMCPY
+			free(tmp); //FREE
+			free(tmp2); //FREE
+			tmp = ft_strdup(*rest + i + 1); //STRDUP
 			ret = 1;
 			break ;
 		}
@@ -43,8 +43,8 @@ int		get_rest(char **rest, char **line)
 	if (i != 0 && ret == 0)
 	{
 		tmp2 = *line;
-		*line = ft_strjoin(tmp2, *rest); //MEMCPY
-		free(tmp2);
+		*line = ft_strjoin(tmp2, *rest); //STRJOIN
+		free(tmp2); //FREE
 		ret = 1;
 	}
 	free(*rest); //FREE
@@ -71,23 +71,30 @@ int		read_line(int fd, char **rest, char **line)
 	char	buff[BUFFER_SIZE + 1];
 	int		ret;
 	char	*tmp;
+	char	*keep;
 
-	for (int i = 0; i < BUFFER_SIZE; i++) // ft_bzero
+	keep = *rest;
+	for (int i = 0; i < BUFFER_SIZE; i++) // !!AJOUTER FT_BZERO!! //
 		buff[i] = 0;
 	while ((ret = read(fd, buff, BUFFER_SIZE)) > 0)
 	{
 		buff[BUFFER_SIZE] = '\0';
 		tmp = *rest;
-		*rest = ft_strjoin(tmp, buff); //utilisation STRJOIN
-		free(tmp);
+		*rest = ft_strjoin(tmp, buff); //STRJOIN
+		free(tmp); //FREE
 		if (contained_newline(*rest) == TRUE)
 			break ;
 	}
-	if (ret != -1 && *rest != NULL)
+
+	if (ret == 0 && (keep == NULL || *keep == '\0'))
 	{
-		get_rest(rest, line);
-		return (*line != NULL);
+		if (*rest != NULL)
+			get_rest(rest, line);
+		free(*rest);
+		return (0);
 	}
+	else if (ret != -1 && *rest != NULL)
+		return (get_rest(rest, line));
 	return (ret);
 }
 
@@ -99,11 +106,12 @@ int		get_next_line(int fd, char **line)
 	ret = -1;
 	if (fd >= 0)
 	{
+		*line = NULL;
 		if (rest == NULL)
 			ret = 0;
 		else
 			ret = get_rest(&rest, line);
-		if (ret == 0)
+		if (rest == NULL || *line == NULL)
 			ret = read_line(fd, &rest, line);
 	}
 	return (ret);	

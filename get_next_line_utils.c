@@ -6,7 +6,7 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:53:46 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/18 20:05:54 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/19 14:12:11 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ char	*ft_strdup(const char *s)
 	char	*str;
 	size_t	len_str;
 
-	len_str = ft_strlen(s);
+	len_str = ft_strlen(s); //STRLEN
 	str = (char *)malloc(sizeof(char) * (len_str + 1));
 	if (str != NULL)
 	{
-		ft_memcpy(str, s, len_str);
+		ft_memcpy(str, s, len_str); //MEMCPY
 		str[len_str] = '\0';
 	}
 	return (str);
@@ -57,13 +57,13 @@ char	*ft_strndup(const char *s, size_t size)
 	char	*str;
 	size_t	len_str;
 
-	len_str = ft_strlen(s);
+	len_str = ft_strlen(s); //STRLEN
 	if (size > len_str)
 		size = len_str;
 	str = (char *)malloc(sizeof(char) * (size + 1));
 	if (str != NULL)
 	{
-		ft_memcpy(str, s, size);
+		ft_memcpy(str, s, size); //MEMCPY
 		str[size] = '\0';
 	}
 	return (str);
@@ -85,15 +85,15 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		str = (char *)malloc(sizeof(char) * (len_str + 1));
 		if (str != NULL)
 		{
-			ft_memcpy(str, s1, len_s1);
-			ft_memcpy(str + len_s1, s2, len_s2);
+			ft_memcpy(str, s1, len_s1); //MEMCPY
+			ft_memcpy(str + len_s1, s2, len_s2); //MEMCPY
 			str[len_str] = '\0';
 		}
 	}
 	else if (s1 == NULL)
-		str = ft_strdup(s2);
+		str = ft_strdup(s2); //STRDUP
 	else if (s2 == NULL)
-		str = ft_strdup(s1);
+		str = ft_strdup(s1); //STRDUP
 	return (str);
 }
 
