@@ -6,12 +6,25 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:53:46 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/21 12:03:35 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/21 16:01:50 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h> //DEBUG
+
+void	*ft_memset(void *s, int c, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n)
+	{
+		((unsigned char *)s)[i] = (unsigned char)c;
+		i++;
+	}
+	return (s);
+}
 
 size_t	ft_strlen(const char *s)
 {
@@ -23,7 +36,7 @@ size_t	ft_strlen(const char *s)
 	return (len);
 }
 
-void	*memcpy(void *dest, const void *src, size_t n)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
 	size_t	i;
 
@@ -38,21 +51,6 @@ void	*memcpy(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
-char	*ft_strdup(const char *s)
-{
-	char	*str;
-	size_t	len_str;
-
-	len_str = ft_strlen(s); //STRLEN
-	str = (char *)malloc(sizeof(char) * (len_str + 1));
-	if (str != NULL)
-	{
-		memcpy(str, s, len_str); //MEMCPY
-		str[len_str] = '\0';
-	}
-	return (str);
-}
-
 char	*ft_strndup(const char *s, size_t size)
 {
 	char	*str;
@@ -64,61 +62,36 @@ char	*ft_strndup(const char *s, size_t size)
 	str = (char *)malloc(sizeof(char) * (size + 1));
 	if (str != NULL)
 	{
-		memcpy(str, s, size); //MEMCPY
+		ft_memcpy(str, s, size); //MEMCPY
 		str[size] = '\0';
 	}
 	return (str);
 }
 
-/*char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2, int is_free)
 {
 	char	*str;
-	size_t	len_s1;
-	size_t	len_s2;
 	size_t	len_str;
 
 	str = NULL;
 	if (s1 != NULL && s2 != NULL)
 	{
-		len_s1 = ft_strlen(s1);
-		len_s2 = ft_strlen(s2);
-		len_str = len_s1 + len_s2;
+		len_str = ft_strlen(s1) + ft_strlen(s2);
 		str = (char *)malloc(sizeof(char) * (len_str + 1));
 		if (str != NULL)
 		{
-			ft_memcpy(str, s1, len_s1); //MEMCPY
-			ft_memcpy(str + len_s1, s2, len_s2); //MEMCPY
+			ft_memcpy(str, s1, ft_strlen(s1)); //MEMCPY
+			ft_memcpy(str + ft_strlen(s1), s2, ft_strlen(s2)); //MEMCPY
 			str[len_str] = '\0';
 		}
 	}
-	else if (s1 == NULL)
-		str = ft_strdup(s2); //STRDUP
-	else if (s2 == NULL)
-		str = ft_strdup(s1); //STRDUP
-	return (str);
-}*/
-
-void	*memjoin(const void *s1, const void *s2, size_t len_s1,
-			size_t len_s2)
-{
-	void	*str;
-	size_t	len_str;
-
-	str = NULL;
-	printf("TEST2\n"); //DEBUG
-	if (s1 != NULL && s2 != NULL)
-	{
-		len_str = len_s1 + len_s2;
-		str = malloc(len_str + 1);
-		if (str != NULL)
-		{
-			memcpy(str, s1, len_s1); //MEMCPY
-			memcpy(str + len_s1, s2, len_s2); //MEMCPY
-		} 
-	}
-	else if (s1 == NULL)
-		str = ft_strdup(s2); //STRDUP
-	else if (s2 == NULL)
-		str = ft_strdup(s1); //STRDUP
+	if (s1 == NULL)
+		str = ft_strndup(s2, ft_strlen(s2)); //STRNDUP
+	if (s2 == NULL)
+		str = ft_strndup(s1, ft_strlen(s1)); //STRNDUP
+	if (is_free == FREE_S1 || is_free == FREE_S1_S2)
+		free((char *)s1); //FREE
+	if (is_free == FREE_S2 || is_free == FREE_S1_S2)
+		free((char *)s2); //FREE
 	return (str);
 }

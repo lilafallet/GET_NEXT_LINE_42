@@ -6,7 +6,7 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 16:30:10 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/21 12:03:02 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/21 15:58:03 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,9 @@ int		get_rest(char **rest, char **line)
 		{
 			tmp = *line;
 			tmp2 = ft_strndup(*rest, i); //STRNDUP
-			//*line = ft_strjoin(tmp, tmp2); //STRJOIN
-			*line = memjoin(tmp, tmp2, ft_strlen(tmp), ft_strlen(tmp2));
-			//MEMJOIN 
-			free(tmp); //FREE
-			free(tmp2); //FREE
-			tmp = ft_strdup(*rest + i + 1); //STRDUP
+			*line = ft_strjoin(tmp, tmp2, FREE_S1_S2); //STRJOIN
+			tmp = ft_strndup(*rest + i + 1, ft_strlen(*rest) - i);
+			//STRNDUP
 			ret = 1;
 			break ;
 		}
@@ -45,10 +42,7 @@ int		get_rest(char **rest, char **line)
 	if (i != 0 && ret == 0)
 	{
 		tmp2 = *line;
-		//*line = ft_strjoin(tmp2, *rest); //STRJOIN
-		*line = memjoin(tmp2, *rest, ft_strlen(tmp2), ft_strlen(*rest));
-		//MEMJOIN 
-		free(tmp2); //FREE
+		*line = ft_strjoin(tmp2, *rest, FREE_S1); //STRJOIN
 		ret = 1;
 	}
 	free(*rest); //FREE
@@ -78,16 +72,12 @@ int		read_line(int fd, char **rest, char **line)
 	char	*keep;
 
 	keep = *rest;
-	for (int i = 0; i < BUFFER_SIZE; i++) // !!AJOUTER FT_BZERO!! //
-		buff[i] = 0;
+	ft_memset(buff, 0, BUFFER_SIZE);
 	while ((ret = read(fd, buff, BUFFER_SIZE)) > 0)
 	{
 		buff[BUFFER_SIZE] = '\0';
 		tmp = *rest;
-		//*rest = ft_strjoin(tmp, buff); //STRJOIN
-		printf("TEST1\n"); //DEBUG
-		*rest = memjoin(tmp, buff, ft_strlen(tmp), ret); //MEMJOIN
-		free(tmp); //FREE
+		*rest = ft_strjoin(tmp, buff, FREE_S1); //STRJOIN
 		if (contained_newline(*rest) == TRUE)
 			break ;
 	}
@@ -98,9 +88,7 @@ int		read_line(int fd, char **rest, char **line)
 		free(*rest);
 		return (0);
 	}
-	else if (ret != -1 && *rest != NULL)
-		return (get_rest(rest, line));
-	return (ret);
+	return ((ret != - 1 && *rest != NULL) ? get_rest(rest, line) : ret);
 }
 
 int		get_next_line(int fd, char **line)
