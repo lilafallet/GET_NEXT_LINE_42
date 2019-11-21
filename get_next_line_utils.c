@@ -6,7 +6,7 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:53:46 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/21 16:01:50 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/21 17:11:22 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	size_t	i;
 
 	i = 0;
-	//if (dest == NULL && src == NULL)
-	//	return (NULL);
+	if (dest == NULL && src == NULL)
+		return (NULL);
 	while (i < n)
 	{
 		((unsigned char *)dest)[i] = ((unsigned char *)src)[i];
@@ -94,4 +94,16 @@ char	*ft_strjoin(char const *s1, char const *s2, int is_free)
 	if (is_free == FREE_S2 || is_free == FREE_S1_S2)
 		free((char *)s2); //FREE
 	return (str);
+}
+
+char	*ft_swap(char **tmp, char **line, char **tmp2, char **rest,
+		int i, int do_what)
+{
+	if (do_what == DO_LINE)
+	{
+		*tmp = *line;
+		return (ft_strndup(*rest, i));
+	}
+	*line = ft_strjoin(*tmp, *tmp2, FREE_S1_S2);
+	return (ft_strndup(*rest + i + 1, ft_strlen(*rest) - i));
 }

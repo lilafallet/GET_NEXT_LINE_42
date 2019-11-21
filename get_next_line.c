@@ -6,7 +6,7 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 16:30:10 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/21 15:58:03 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/21 17:18:52 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,8 @@ int		get_rest(char **rest, char **line)
 	{
 		if ((*rest)[i] == '\n')
 		{
-			tmp = *line;
-			tmp2 = ft_strndup(*rest, i); //STRNDUP
-			*line = ft_strjoin(tmp, tmp2, FREE_S1_S2); //STRJOIN
-			tmp = ft_strndup(*rest + i + 1, ft_strlen(*rest) - i);
-			//STRNDUP
+			tmp2 = ft_swap(&tmp, line, &tmp2, rest, i, DO_TMP2); //SWAP
+			tmp = ft_swap(&tmp, line, &tmp2, rest, i, DO_TMP); //SWAP
 			ret = 1;
 			break ;
 		}
