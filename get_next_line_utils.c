@@ -6,7 +6,7 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:53:46 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/21 17:11:22 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/21 18:37:44 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ char	*ft_strjoin(char const *s1, char const *s2, int is_free)
 			str[len_str] = '\0';
 		}
 	}
-	if (s1 == NULL)
+	else if (s1 == NULL)
 		str = ft_strndup(s2, ft_strlen(s2)); //STRNDUP
-	if (s2 == NULL)
+	else if (s2 == NULL)
 		str = ft_strndup(s1, ft_strlen(s1)); //STRNDUP
 	if (is_free == FREE_S1 || is_free == FREE_S1_S2)
 		free((char *)s1); //FREE
@@ -99,11 +99,17 @@ char	*ft_strjoin(char const *s1, char const *s2, int is_free)
 char	*ft_swap(char **tmp, char **line, char **tmp2, char **rest,
 		int i, int do_what)
 {
-	if (do_what == DO_LINE)
+	if (do_what == DO_TMP2)
 	{
 		*tmp = *line;
 		return (ft_strndup(*rest, i));
 	}
-	*line = ft_strjoin(*tmp, *tmp2, FREE_S1_S2);
-	return (ft_strndup(*rest + i + 1, ft_strlen(*rest) - i));
+	if (do_what == DO_TMP)
+	{
+		*line = ft_strjoin(*tmp, *tmp2, FREE_S1_S2);
+		return (ft_strndup(*rest + i + 1, ft_strlen(*rest) - i));
+	}
+	if (do_what == DO_LINE)
+		*tmp2 = *line;
+	return (ft_strjoin(*tmp2, *rest, FREE_S1));
 }
