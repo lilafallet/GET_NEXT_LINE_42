@@ -20,6 +20,7 @@ int	main(int ac, char **av)
 		line = NULL;
 	}
 	printf("line : |%s| ret : %d\n", line, ret);
+	free(line);
 	close(fd);
 	return (EXIT_SUCCESS);
 }

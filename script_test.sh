@@ -1,14 +1,23 @@
-#!/bin/zsh
+#!/bin/bash
 
-if test -f "$1" ; then
+if [ -f "$1" ]; then
 	VAR=0
-	while [ $VAR -le 50 ]; do
+	MAX=$2
+	if [ -z "$MAX" ]; then
+		MAX=10
+	fi
+	while [ $VAR -le $MAX ]; do
+		if [ $VAR != 0 ]; then
+			echo
+		fi
 		gcc -Wall -Wextra -Werror -fsanitize=address -g3 get_next_line.c get_next_line_utils.c TEST_main.c -I. -D BUFFER_SIZE=$VAR
+		if [ $? != 0 ]; then
+			exit
+		fi
 		./a.out $1
 		((VAR++))
-		echo
 	done
-	rm a.out
+	rm -f a.out
 else
 	echo "Bad file"
 	exit
