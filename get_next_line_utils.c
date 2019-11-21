@@ -6,11 +6,24 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:53:46 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/19 14:12:11 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/21 15:50:28 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+void	*ft_memset(void *s, int c, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n)
+	{
+		((unsigned char *)s)[i] = (unsigned char)c;
+		i++;
+	}
+	return (s);
+}
 
 size_t	ft_strlen(const char *s)
 {
@@ -37,21 +50,6 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
-char	*ft_strdup(const char *s)
-{
-	char	*str;
-	size_t	len_str;
-
-	len_str = ft_strlen(s); //STRLEN
-	str = (char *)malloc(sizeof(char) * (len_str + 1));
-	if (str != NULL)
-	{
-		ft_memcpy(str, s, len_str); //MEMCPY
-		str[len_str] = '\0';
-	}
-	return (str);
-}
-
 char	*ft_strndup(const char *s, size_t size)
 {
 	char	*str;
@@ -69,31 +67,31 @@ char	*ft_strndup(const char *s, size_t size)
 	return (str);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2, int is_free)
 {
 	char	*str;
-	size_t	len_s1;
-	size_t	len_s2;
 	size_t	len_str;
 
 	str = NULL;
 	if (s1 != NULL && s2 != NULL)
 	{
-		len_s1 = ft_strlen(s1);
-		len_s2 = ft_strlen(s2);
-		len_str = len_s1 + len_s2;
+		len_str = ft_strlen(s1) + ft_strlen(s2);
 		str = (char *)malloc(sizeof(char) * (len_str + 1));
 		if (str != NULL)
 		{
-			ft_memcpy(str, s1, len_s1); //MEMCPY
-			ft_memcpy(str + len_s1, s2, len_s2); //MEMCPY
+			ft_memcpy(str, s1, ft_strlen(s1)); //MEMCPY
+			ft_memcpy(str + ft_strlen(s1), s2, ft_strlen(s2)); //MEMCPY
 			str[len_str] = '\0';
 		}
 	}
-	else if (s1 == NULL)
-		str = ft_strdup(s2); //STRDUP
-	else if (s2 == NULL)
-		str = ft_strdup(s1); //STRDUP
+	if (s1 == NULL)
+		str = ft_strndup(s2, ft_strlen(s2)); //STRNDUP
+	if (s2 == NULL)
+		str = ft_strndup(s1, ft_strlen(s1)); //STRNDUP
+	if (is_free == FREE_S1 || is_free == FREE_S1_S2)
+		free((char *)s1); //FREE
+	if (is_free == FREE_S2 || is_free == FREE_S1_S2)
+		free((char *)s2); //FREE
 	return (str);
 }
 
