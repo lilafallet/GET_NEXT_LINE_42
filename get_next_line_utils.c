@@ -6,7 +6,7 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:53:46 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/21 19:15:29 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/22 11:12:23 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*ft_strndup(const char *s, size_t size)
 	len_str = ft_strlen(s); //STRLEN
 	if (size > len_str)
 		size = len_str;
-	str = (char *)malloc(sizeof(char) * (size + 1));
+	str = (char *)malloc(sizeof(char) * (size + 1)); //MALLOC
 	if (str != NULL)
 	{
 		ft_memcpy(str, s, size); //MEMCPY
@@ -77,8 +77,8 @@ char	*ft_strjoinfree(char **s1, char **s2, int is_free)
 
 	if (*s1 != NULL && *s2 != NULL)
 	{
-		len_str = ft_strlen(*s1) + ft_strlen(*s2);
-		str = (char *)malloc(sizeof(char) * (len_str + 1));
+		len_str = ft_strlen(*s1) + ft_strlen(*s2); //STRLEN
+		str = (char *)malloc(sizeof(char) * (len_str + 1)); //MALLOC
 		if (str != NULL)
 		{
 			ft_memcpy(str, *s1, ft_strlen(*s1)); //MEMCPY

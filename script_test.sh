@@ -1,6 +1,9 @@
 #!/bin/bash
 
-if [ -f "$1" ]; then
+if [ -v "$1" ]; then
+	echo "Bad file"
+	exit
+else
 	VAR=0
 	MAX=$2
 	if [ -z "$MAX" ]; then
@@ -18,7 +21,4 @@ if [ -f "$1" ]; then
 		((VAR++))
 	done
 	rm -f a.out
-else
-	echo "Bad file"
-	exit
 fi
