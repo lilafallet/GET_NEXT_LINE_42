@@ -6,7 +6,7 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 16:30:10 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/22 16:29:20 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/22 18:09:21 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,22 +89,26 @@ int		read_line(int fd, char **rest, char **line) //++FD--//
 
 int		get_next_line(int fd, char **line) //++FD--//
 {
-	static char	*rest = NULL;
-	int			ret;
+	static t_list	*lst = NULL;
+	t_file			*file;
+	int				ret;
 
 	ret = -1;
-	ft_lstnew(fd, rest); //BONUS
 	if (fd >= 0 && BUFFER_SIZE > 0 && BUFFER_SIZE < 8192000) //++FD--//
 	{
 		*line = NULL;
-		ret = get_rest(&rest, line); //GET_REST
-		if (rest == NULL || *line == NULL)
-			ret = read_line(fd, &rest, line); //READ_LINE //++FD--//
+		file = get_file(&lst, fd);
+		/* -> va creer le rest selon "l'index" fd. On va donc lui
+			  envoyer le rest contenu dans lst et le file descriptor
+		   -> La fonction va par la suite renvoyer le t_file FILE qui
+			  va contenir le rest correspondant*/
+		//if (file == NULL)
+			//return (-1);
+		ret = get_rest(&file->rest, line); //GET_REST
+		if (file->rest == NULL || *line == NULL)
+			ret = read_line(fd, &file->rest, line); //READ_LINE //++FD--//
+		//if (ret < 1)
+			//ft_del_node(&lst, file);
 	}
-//	Old Version GNL
-//
-//	if (ret == 0 && *line != NULL) 
-//		ret = 1;
-//
 	return (ret);	
 }

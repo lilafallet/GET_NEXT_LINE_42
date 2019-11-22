@@ -6,7 +6,7 @@
 /*   By: lfallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 16:28:57 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/22 16:14:50 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/22 18:11:22 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct	s_file
 	int			fd;
 }				t_file;
 
-void	ft_del_node(t_list **lst, t_file *file);
-t_file *ft_get_file(t_list **lst, int fd);
+t_file	*get_file(t_list **lst, int fd);
+void	create_elem(t_list *lst, int fd);
 
 # endif
