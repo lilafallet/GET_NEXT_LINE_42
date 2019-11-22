@@ -6,7 +6,7 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 16:30:10 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/22 11:11:38 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/22 16:29:20 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int		get_rest(char **rest, char **line)
 	return (ret);
 }
 
-int		read_line(int fd, char **rest, char **line)
+int		read_line(int fd, char **rest, char **line) //++FD--//
 {
 	char	buff[BUFFER_SIZE + 1];
 	int		ret;
@@ -68,7 +68,7 @@ int		read_line(int fd, char **rest, char **line)
 
 	keep = *rest;
 	ft_memset(buff, 0, BUFFER_SIZE + 1); //MEMSET
-	while ((ret = read(fd, buff, BUFFER_SIZE)) > 0) //READ
+	while ((ret = read(fd, buff, BUFFER_SIZE)) > 0) //READ //++FD--//
 	{
 		buff[BUFFER_SIZE] = '\0';
 		ptr_buff = buff;
@@ -87,24 +87,24 @@ int		read_line(int fd, char **rest, char **line)
 	//GET_REST
 }
 
-int		get_next_line(int fd, char **line)
+int		get_next_line(int fd, char **line) //++FD--//
 {
 	static char	*rest = NULL;
 	int			ret;
 
 	ret = -1;
-	if (fd >= 0 && BUFFER_SIZE > 0 && BUFFER_SIZE < 8192000)
+	ft_lstnew(fd, rest); //BONUS
+	if (fd >= 0 && BUFFER_SIZE > 0 && BUFFER_SIZE < 8192000) //++FD--//
 	{
 		*line = NULL;
 		ret = get_rest(&rest, line); //GET_REST
 		if (rest == NULL || *line == NULL)
-			ret = read_line(fd, &rest, line); //READ_LINE
+			ret = read_line(fd, &rest, line); //READ_LINE //++FD--//
 	}
-/*
-**	Old Version GNL
-**
-**	if (ret == 0 && *line != NULL) 
-**		ret = 1;
-*/
+//	Old Version GNL
+//
+//	if (ret == 0 && *line != NULL) 
+//		ret = 1;
+//
 	return (ret);	
 }

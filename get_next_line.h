@@ -6,7 +6,7 @@
 /*   By: lfallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 16:28:57 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/21 19:25:35 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/22 16:14:50 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,20 @@ char	*ft_strndup(const char *s, size_t size);
 void	*ft_memset(void *s, int c, size_t n);
 char	*ft_swap(char **tmp, char **line, char **tmp2, char **rest,
 		int i, int do_what);
+
+typedef struct		s_list
+{
+	void			*content;
+	struct s_list	*next;
+}					t_list;
+
+typedef struct	s_file
+{
+	char		*rest;
+	int			fd;
+}				t_file;
+
+void	ft_del_node(t_list **lst, t_file *file);
+t_file *ft_get_file(t_list **lst, int fd);
 
 # endif
