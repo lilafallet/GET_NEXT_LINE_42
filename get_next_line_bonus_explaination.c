@@ -6,7 +6,7 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/22 16:45:38 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/23 19:40:59 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/24 16:19:51 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_list	*create_new_list(void *content)
 		elem->content = content; /*dans la stucture t_list,
 		content vaut maintenant le rest et le fd de content, qui
 		est contenu dans la structure t_file file*/
-		elem->next = NULL;
+		elem->next = NULL; /*met la prochaine structure a NULL*/ 
 	}
 	return (elem);
 }
@@ -37,12 +37,15 @@ int		create_new_file(t_list **lst, int fd)
 	de la taille de la structure t_file (rest et fd)*/
 	if (file == NULL)
 		return (-1);
-	file->fd = fd;
-	file->rest = NULL;
+	file->fd = fd; /*dans la structure t_file, le fd vaut donc
+	le fd envoye*/
+	file->rest = NULL; /*vu que lst (donc le rest) est a nulle
+	on met donc le rest dans la structure egalement a NULL*/
 	elem = create_new_list(file); /*envoie a la fonction qui va
 	creer la liste, la structure t_file file qui contient donc
 	le rest et le fd.*/
-	if (elem == NULL)
+	if (elem == NULL) /*si le malloc de la fonction
+	create_new_file echoue on retourne une erreur -1*/
 	{
 		free(file);
 		return (-1);
@@ -61,12 +64,18 @@ t_file *get_file(t_list **lst, int fd)
 
 	t_list	*run;
 
-	run = *lst; /* si /!\ run == NULL*/
-	while (run != NULL)
+	run = *lst; /* si /!\ run donc lst (donc list) == NULL*/
+	while (run != NULL) /* --> run donc lst (donc list) != NULL*/
 	{
-		if (((t_file *)(run->content))->fd == fd)
-			return ((t_file *)(run->content));
-		run = run->next;
+		if (((t_file *)(run->content))->fd == fd) /*si dans la
+		structure t_list, si le fd contenu dans content (donc
+		content qui pointe sur la structure t_file qui contient
+		le rest et le fd) est egale au fd envoye au fd contenu
+		dans la structure, alors on rentre dans la condition)*/
+			return ((t_file *)(run->content)); /*on retourne donc
+			le file qui contient le reste et le fd en question*/
+		run = run->next; /*si le fd ne correspond pas au fd
+		envoye, on se deplace dans la structure d'apres*/
 	}
 	if (create_new_file(lst, fd) == -1) 
 		return (NULL); /*rentre dans cette condition si le
