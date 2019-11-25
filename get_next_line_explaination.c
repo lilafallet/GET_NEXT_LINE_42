@@ -6,7 +6,7 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 16:30:10 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/24 21:02:30 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/25 16:27:00 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,35 @@ int		get_rest(char **rest, char **line)
 
 	ret = 0;
 	if (*rest == NULL)
-		return (ret);	
-	i = contained_newline(*rest);
+		return (ret); /*on retourne donc 0*/
+	i = contained_newline(*rest); /*on recupere l'index de ou se
+	trouve le '\n'* ou le retour -1 si il n'y en a pas*/
 	tmp = NULL;
-	if (**rest != '\0')
+	if (**rest != '\0') /*rentre dans cette condition si rest
+	contient quelque chose*/
 	{
-		ret = 1;
-		if (i == -1)
-			*line = ft_strjoinfree(line, rest, FREE_S2);
-		else
+		ret = 1; /*si on rentre dans cette condition le retour
+		vaudra 1 car si on est arrive ici c'est qu'on a lue une
+		ligne*/
+		if (i == -1) /*rentre dans cette condition si :
+		- rest ne contient pas de '\n'*/
+			*line = ft_strjoinfree(line, rest, FREE_S2); /*line
+			va maintenant valoir le rejoignement de line et du
+			rest, et on free rest*/
+		else /*rentre dans le cas ou rest contient un '\n'*/
 		{
-			tmp = ft_strndup(*rest, i);
-			*line = ft_strjoinfree(line, &tmp, FREE_S2);
-			tmp = ft_strndup(*rest + i + 1, ft_strlen(*rest + i + 1));
+			tmp = ft_strndup(*rest, i); /*tmp va valoir le reste
+			jusqu'au caractere avant le '\n'*/
+			*line = ft_strjoinfree(line, &tmp, FREE_S2); /*line
+			va maintenant valoir le rejoignement de line et tmp
+			(le reste jusqu'au caractere avant le '\n') et on
+			free tmp*/
+			tmp = ft_strndup(*rest + i + 1, ft_strlen(*rest + i + 1)); /*tmp va donc valoir le rest a partir du caractere apres
+	   '\n'*/
 		}
 	}
-	free(*rest);
-	*rest = tmp;
+	free(*rest); 
+	*rest = tmp; /*rest vaut maintenant tmp*/
 	return (ret);
 }
 
@@ -77,26 +89,38 @@ int		read_line(int fd, char **rest, char **line)
 		le rest + ce qui a ete lue*/
 		ft_memset(buff, 0, BUFFER_SIZE + 1); /*cleaner buff*/
 		if (contained_newline(*rest) != -1) /*si rest contient
-		'\n' on sort de la bouble. Dans le cas inverse, on
+		'\n' on sort de la boucle. Dans le cas inverse, on
 		contenue de lire tant qu'on ne trouve pas de '\n dans la
 		lecture*/
 			break ;
 	}
-	if (ret == 0 && (keep == NULL || *keep == '\0')) /*
+	if (ret == 0 && (keep == NULL || *keep == '\0'))
+	/*rendre dans cette condition si :
+		- si on a lu tout le document texte
+		- si keep (donc rest) est a NULL ou contient juste un 
+			'\0'*/
 	{
-		get_rest(rest, line);
+		get_rest(rest, line); 
 		free(*rest);
-		return (0);
+		return (0); /*on appelle la fonction get_rest pour
+		recuperer le reste, mais a la difference des autres
+		appels, on libere le rest et on renvoie bien 0 pour
+		annoncer qu'on a fini le fichier*/
 	}
-	return ((ret != -1 && *rest != NULL) ? get_rest(rest, line) : ret);
+	return ((ret != -1 && *rest != NULL) ? get_rest(rest, line) : ret); /*si ret est different de -1 et que le rest de depart
+		n'est pas egale a NULL (soit que le fichier a ete lu 
+		entierement ou qu'une ligne a ete lu), on appelle la
+		fonction get rest pour avoir le rest.
+		Dans le cas contraire, on renvoie tout simplement le
+		retour (-1, 0 ou 1)*/
 }
 
 int		get_next_line(int fd, char **line)
 {
-	static t_list	*list = NULL; /*variable qui contient le
-	reste*/
-	t_file			*file; /*structure qui va contenir le reste
-	correspondant au file descriptor*/
+	static t_list	*list = NULL; /*pointeur sur une liste qui
+	contient la structure qui contient content (qui contiendra
+	le rest et le fd)*/
+	t_file			*file; /*pointeur sur la structure qui va contenir le reste correspondant au file descriptor*/
 	int				ret; /*variable qui va contenir la valeur de retour*/
 
 	ret = -1; /*si on ne passe pas par le if, la valeur de retour sera de -1 car il y aura eu une erreur*/
@@ -124,9 +148,18 @@ int		get_next_line(int fd, char **line)
 		/*on va envoyer a la fonction get_rest l'adresse du
 		t_file file qui contient le rest mais aussi la ligne
 		de lecture*/
-		if (file->rest == NULL || *line == NULL)
-			ret = read_line(fd, &file->rest, line);
-		if (ret < 1)
+		if (file->rest == NULL || *line == NULL) /*on rentre
+		dans cette condition la premiere fois que l'on rentre
+		dans la fonction get_next_line au debut de chaque
+		ouverture de file descriptor, c'est a dire quand le rest
+		est egale a NULL. Ou aussi dans le cas ou la ligne en
+		cours est egale a NULL*/
+			ret = read_line(fd, &file->rest, line); /*on envoie
+		a la fonction qui va lire la ligne le file descriptor et
+		donc le reste en fonction de ce file descriptor puis
+		finalement la ligne a lire*/
+		if (ret < 1) /*dans le cas ou il y a eu une erreur (-1)
+		ou que le fichier a ete lue entierement (0)*/
 			del(&list, file);
 	}
 	return (ret);	

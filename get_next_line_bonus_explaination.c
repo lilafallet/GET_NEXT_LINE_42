@@ -6,7 +6,7 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/22 16:45:38 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/24 16:19:51 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/25 17:23:24 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ int		create_new_file(t_list **lst, int fd)
 		return (-1);
 	file->fd = fd; /*dans la structure t_file, le fd vaut donc
 	le fd envoye*/
-	file->rest = NULL; /*vu que lst (donc le rest) est a nulle
-	on met donc le rest dans la structure egalement a NULL*/
+	file->rest = NULL; /*on n'a pas encore lu donc on met le rest
+	a NULL*/
 	elem = create_new_list(file); /*envoie a la fonction qui va
-	creer la liste, la structure t_file file qui contient donc
-	le rest et le fd.*/
+	creer un nouveau maillon de la liste, la structure t_file file
+	qui contient donc le rest et le fd.*/
 	if (elem == NULL) /*si le malloc de la fonction
 	create_new_file echoue on retourne une erreur -1*/
 	{
@@ -51,9 +51,10 @@ int		create_new_file(t_list **lst, int fd)
 		return (-1);
 	}
 	elem->next = *lst; /*le t_list elem qui pointe sur la
-	prochaine structure s_list vaut le static rest*/
-	*lst = elem; /*puis le static rest devient le t_list elem
+	prochaine structure s_list vaut le static list*/
+	*lst = elem; /*puis le static list devient le t_list elem
 	avec le file descriptor et le rest qui correspond*/
+	/*--> mettre au premier rang*/
 	return (0);
 }
 
@@ -75,7 +76,7 @@ t_file *get_file(t_list **lst, int fd)
 			return ((t_file *)(run->content)); /*on retourne donc
 			le file qui contient le reste et le fd en question*/
 		run = run->next; /*si le fd ne correspond pas au fd
-		envoye, on se deplace dans la structure d'apres*/
+		envoye, on se deplace dans la liste d'apres*/
 	}
 	if (create_new_file(lst, fd) == -1) 
 		return (NULL); /*rentre dans cette condition si le
@@ -96,17 +97,22 @@ void	del(t_list **lst, t_file *file)
 	tmp = run;
 	while (run != NULL)
 	{
-		if ((t_file *)(run->content) == file)
+		if ((t_file *)(run->content) == file) /*rentre dans le
+		cas le contenu de content est le meme que celui du file*/
 		{
-			tmp->next = run->next;
-			free(((t_file *)(run->content))->rest);
-			free(run->content);
-			if (run == *lst)
-				*lst = run->next;
-			free(run);
+			tmp->next = run->next; /*"se deplace" dans la struct
+			suivante*/ 
+			free(((t_file *)(run->content))->rest);/*free rest*/
+			free(run->content); /*free le content*/
+			if (run == *lst) /*si run est sur le premier maillon
+			de la structure*/
+				*lst = run->next; /*lst se place sur la structure
+				d'apres*/
+			free(run); /*free le pointeur sur la structure
+			t_list*/
 			return ;
 		}
 		tmp = run;
-		run = run->next;
+		run = run->next; /*se deplace a la structure suivante*/
 	}
 }
