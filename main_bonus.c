@@ -31,11 +31,11 @@ int	main(int ac, char **av)
 		ret1 = get_next_line(fd1, &line1);
 		ret2 = get_next_line(fd2, &line2);
 		ret3 = get_next_line(fd3, &line3);
-		if (ret1 > 0)
+		if (line1 != NULL)
 			printf("line1 : |%s| ret1 : %d\n", line1, ret1);
-		if (ret2 > 0)
+		if (line2 != NULL)
 			printf("line2 : |%s| ret2 : %d\n", line2, ret2);
-		if (ret3 > 0)
+		if (line3 != NULL)
 			printf("line3 : |%s| ret3 : %d\n", line3, ret3);
 		free(line1);
 		free(line2);
