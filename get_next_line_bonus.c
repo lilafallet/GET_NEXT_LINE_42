@@ -6,13 +6,13 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/22 16:45:38 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/23 09:57:29 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/26 14:06:24 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_list	*create_new_list(void *content)
+static t_list	*create_new_list(void *content)
 {
 	t_list	*elem;
 
@@ -25,7 +25,7 @@ t_list	*create_new_list(void *content)
 	return (elem);
 }
 
-int		create_new_file(t_list **lst, int fd)
+static int		create_new_file(t_list **lst, int fd)
 {
 	t_file	*file;
 	t_list	*elem;
@@ -46,7 +46,7 @@ int		create_new_file(t_list **lst, int fd)
 	return (0);
 }
 
-t_file *get_file(t_list **lst, int fd)
+t_file			*get_file(t_list **lst, int fd)
 {
 	t_list	*run;
 
@@ -62,7 +62,7 @@ t_file *get_file(t_list **lst, int fd)
 	return ((t_file *)((*lst)->content));
 }
 
-void	del(t_list **lst, t_file *file)
+void			del(t_list **lst, t_file *file)
 {
 	t_list	*run;
 	t_list	*tmp;

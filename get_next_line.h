@@ -6,7 +6,7 @@
 /*   By: lfallet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 16:28:57 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/23 09:58:29 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/26 14:17:33 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,11 @@
 # define FREE_S1 1
 # define FREE_S2 2
 
-int		get_next_line(int fd, char **line);
-size_t	ft_strlen(const char *s);
-void	*ft_memcpy(void *dest, const void *src, size_t n);
-char	*ft_strjoinfree(char **s1, char **s2, int is_free);
-char	*ft_strndup(const char *s, size_t size);
-void	*ft_memset(void *s, int c, size_t n);
-char	*ft_swap(char **tmp, char **line, char **tmp2, char **rest,
-		int i, int do_what);
+int					get_next_line(int fd, char **line);
+size_t				ft_strlen(const char *s);
+char				*ft_strjoinfree(char **s1, char **s2, int is_free);
+char				*ft_strndup(const char *s, size_t size);
+void				*ft_memset(void *s, int c, size_t n);
 
 typedef struct		s_list
 {
@@ -36,15 +33,13 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
-typedef struct	s_file
+typedef struct		s_file
 {
 	char		*rest;
 	int			fd;
-}				t_file;
+}					t_file;
 
-t_list	*create_new_list(void *content);
-int		create_new_file(t_list **lst, int fd);
-t_file *get_file(t_list **lst, int fd);
-void	del(t_list **lst, t_file *file);
+t_file				*get_file(t_list **lst, int fd);
+void				del(t_list **lst, t_file *file);
 
-# endif
+#endif

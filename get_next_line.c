@@ -6,14 +6,14 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 16:30:10 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/23 10:04:11 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/26 14:09:55 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <unistd.h>
 
-ssize_t		contained_newline(char *rest)
+static ssize_t		contained_newline(char *rest)
 {
 	ssize_t	i;
 
@@ -29,7 +29,7 @@ ssize_t		contained_newline(char *rest)
 	return (-1);
 }
 
-int		get_rest(char **rest, char **line)
+static int			get_rest(char **rest, char **line)
 {
 	char	*tmp;
 	ssize_t	i;
@@ -37,7 +37,7 @@ int		get_rest(char **rest, char **line)
 
 	ret = 0;
 	if (*rest == NULL)
-		return (ret);	
+		return (ret);
 	i = contained_newline(*rest);
 	tmp = NULL;
 	if (**rest != '\0')
@@ -57,7 +57,7 @@ int		get_rest(char **rest, char **line)
 	return (ret);
 }
 
-int		read_line(int fd, char **rest, char **line)
+static int			read_line(int fd, char **rest, char **line)
 {
 	char	buff[BUFFER_SIZE + 1];
 	int		ret;
@@ -84,7 +84,7 @@ int		read_line(int fd, char **rest, char **line)
 	return ((ret != -1 && *rest != NULL) ? get_rest(rest, line) : ret);
 }
 
-int		get_next_line(int fd, char **line)
+int					get_next_line(int fd, char **line)
 {
 	static t_list	*lst = NULL;
 	t_file			*file;
@@ -103,5 +103,5 @@ int		get_next_line(int fd, char **line)
 		if (ret < 1)
 			del(&lst, file);
 	}
-	return (ret);	
+	return (ret);
 }
