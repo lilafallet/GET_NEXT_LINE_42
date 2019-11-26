@@ -6,7 +6,7 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 16:30:10 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/26 14:09:55 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/26 17:08:47 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int			read_line(int fd, char **rest, char **line)
 
 int					get_next_line(int fd, char **line)
 {
-	static t_list	*lst = NULL;
+	static char	*rest = NULL;
 	t_file			*file;
 	int				ret;
 
