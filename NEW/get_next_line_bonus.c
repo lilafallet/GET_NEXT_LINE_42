@@ -6,14 +6,14 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 21:24:26 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/26 21:24:41 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/27 16:52:14 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 #include <unistd.h>
 
-static ssize_t		contained_newline(char *rest)
+static ssize_t	contained_newline(char *rest)
 {
 	ssize_t	i;
 
@@ -37,7 +37,7 @@ static int		get_rest(char **rest, char **line)
 
 	ret = 0;
 	if (*rest == NULL)
-		return (ret);	
+		return (ret);
 	i = contained_newline(*rest);
 	tmp = NULL;
 	if (**rest != '\0')
@@ -48,11 +48,11 @@ static int		get_rest(char **rest, char **line)
 		else
 		{
 			tmp = ft_strndup(*rest, i);
-			*line = ft_strjoinfree(line, &tmp, FREE_S2); 
+			*line = ft_strjoinfree(line, &tmp, FREE_S2);
 			tmp = ft_strndup(*rest + i + 1, ft_strlen(*rest + i + 1));
 		}
 	}
-	free(*rest); 
+	free(*rest);
 	*rest = tmp;
 	return (ret);
 }
@@ -65,26 +65,26 @@ static int		read_line(int fd, char **rest, char **line)
 	char	*keep;
 
 	keep = *rest;
-	ft_memset(buff, 0, BUFFER_SIZE + 1); 
-	while ((ret = read(fd, buff, BUFFER_SIZE)) > 0) 
+	ft_memset(buff, 0, BUFFER_SIZE + 1);
+	while ((ret = read(fd, buff, BUFFER_SIZE)) > 0)
 	{
 		buff[BUFFER_SIZE] = '\0';
 		ptr_buff = buff;
-		*rest = ft_strjoinfree(rest, &ptr_buff, FREE_S1); 
-		ft_memset(buff, 0, BUFFER_SIZE + 1); 
-		if (contained_newline(*rest) != -1) 
+		*rest = ft_strjoinfree(rest, &ptr_buff, FREE_S1);
+		ft_memset(buff, 0, BUFFER_SIZE + 1);
+		if (contained_newline(*rest) != -1)
 			break ;
 	}
 	if (ret == 0 && (keep == NULL || *keep == '\0'))
 	{
-		get_rest(rest, line); 
-		free(*rest); 
+		get_rest(rest, line);
+		free(*rest);
 		return (0);
 	}
 	return ((ret != -1 && *rest != NULL) ? get_rest(rest, line) : ret);
 }
 
-int		get_next_line(int fd, char **line)
+int				get_next_line(int fd, char **line)
 {
 	static char	*rest[1025] = {0};
 	int			ret;
@@ -93,9 +93,9 @@ int		get_next_line(int fd, char **line)
 	if (fd >= 0 && fd < 1025 && BUFFER_SIZE > 0)
 	{
 		*line = NULL;
-		ret = get_rest(&rest[fd], line); 
+		ret = get_rest(&rest[fd], line);
 		if (rest[fd] == NULL || *line == NULL)
-			ret = read_line(fd, &rest[fd], line); 
+			ret = read_line(fd, &rest[fd], line);
 	}
-	return (ret);	
+	return (ret);
 }

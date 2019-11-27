@@ -6,14 +6,14 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 16:30:10 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/26 21:22:52 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/27 16:52:54 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <unistd.h>
 
-static ssize_t		contained_newline(char *rest)
+static ssize_t	contained_newline(char *rest)
 {
 	ssize_t	i;
 
@@ -37,7 +37,7 @@ static int		get_rest(char **rest, char **line)
 
 	ret = 0;
 	if (*rest == NULL)
-		return (ret);	
+		return (ret);
 	i = contained_newline(*rest);
 	tmp = NULL;
 	if (**rest != '\0')
@@ -84,7 +84,7 @@ static int		read_line(int fd, char **rest, char **line)
 	return ((ret != -1 && *rest != NULL) ? get_rest(rest, line) : ret);
 }
 
-int		get_next_line(int fd, char **line)
+int				get_next_line(int fd, char **line)
 {
 	static char	*rest = NULL;
 	int			ret;
@@ -97,5 +97,5 @@ int		get_next_line(int fd, char **line)
 		if (rest == NULL || *line == NULL)
 			ret = read_line(fd, &rest, line);
 	}
-	return (ret);	
+	return (ret);
 }
