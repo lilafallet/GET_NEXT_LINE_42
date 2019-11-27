@@ -6,7 +6,7 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 21:23:49 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/26 21:24:16 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/27 17:02:08 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # endif
 # define FREE_S1 1
 # define FREE_S2 2
+# define FD_LIMITS 8193
 
 int					get_next_line(int fd, char **line);
 size_t				ft_strlen(const char *s);

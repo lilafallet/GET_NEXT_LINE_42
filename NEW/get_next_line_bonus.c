@@ -6,7 +6,7 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 21:24:26 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/27 16:52:14 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/27 19:03:27 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,13 @@ static int		read_line(int fd, char **rest, char **line)
 
 int				get_next_line(int fd, char **line)
 {
-	static char	*rest[1025] = {0};
+	static char	*rest[FD_LIMITS] = {0};
 	int			ret;
 
 	ret = -1;
-	if (fd >= 0 && fd < 1025 && BUFFER_SIZE > 0)
+	if (fd >= 0 && fd < FD_LIMITS && BUFFER_SIZE > 0)
 	{
-		*line = NULL;
+		*line = ft_strndup("", 0);
 		ret = get_rest(&rest[fd], line);
 		if (rest[fd] == NULL || *line == NULL)
 			ret = read_line(fd, &rest[fd], line);

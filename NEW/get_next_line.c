@@ -6,7 +6,7 @@
 /*   By: lfallet <lfallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 16:30:10 by lfallet           #+#    #+#             */
-/*   Updated: 2019/11/27 16:52:54 by lfallet          ###   ########.fr       */
+/*   Updated: 2019/11/27 19:03:28 by lfallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int				get_next_line(int fd, char **line)
 	ret = -1;
 	if (fd >= 0 && BUFFER_SIZE > 0)
 	{
-		*line = NULL;
+		*line = ft_strndup("", 0);
 		ret = get_rest(&rest, line);
 		if (rest == NULL || *line == NULL)
 			ret = read_line(fd, &rest, line);
