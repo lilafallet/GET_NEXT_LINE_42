@@ -13,7 +13,7 @@ else
 		if [ $VAR != 0 ]; then
 			echo
 		fi
-		gcc -Wall -Wextra -Werror -fsanitize=address -g3 get_next_line.c get_next_line_utils.c main.c get_next_line_bonus.c -I. -D BUFFER_SIZE=$VAR
+		gcc -Wall -Wextra -Werror -fsanitize=address -g3 get_next_line.c get_next_line_utils.c main.c -I./includes/ -D BUFFER_SIZE=$VAR
 		if [ $? != 0 ]; then
 			exit
 		fi
