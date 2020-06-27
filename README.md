@@ -11,3 +11,9 @@ This project is about to create a function that returns a line ending with a '\n
 # Testing
 
 Normal part :
+
+![](images/normal_part.png)
+
+Bonus part :
+
+![](images/bonus_part.png)
