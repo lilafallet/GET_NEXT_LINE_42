@@ -8,9 +8,6 @@ This project is about to create a function that returns a line ending with a '\n
 
 ``$> cd GNL_42``
    
-   ``$> gcc -Wall -Wextra -Werror -I./includes/ main.c get_next_line.c get_next_line_utils.c``
-   or
-   
-   ``$> gcc -Wall -Wextra -Werror -I./includes/ main_b.c get_next_line_bonus.c get_next_line_utils_bonus.c``
-   
-   ``./a.out``
+# Testing
+
+Normal part :
