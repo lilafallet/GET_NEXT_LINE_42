@@ -1,5 +1,5 @@
 # GET_NEXT_LINE
-This project is about to create a function that returns a line ending with a '\n' read from a file descriptor without knowing its size beforehand.
+The purpose of this project is to create a function that returns a line ending with a '\n' red from a file descriptor without previously knowing its size.
 > BONUS PART : Manage multiple files
 
 # Building
